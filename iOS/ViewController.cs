@@ -1,10 +1,8 @@
 ﻿using System;
-
+using System.Diagnostics;
+using Foundation;
 using UIKit;
 using WebKit;
-using Foundation;
-using System.Diagnostics;
-using System.IO;
 
 namespace Chart.iOS
 {
@@ -24,11 +22,6 @@ namespace Chart.iOS
 			var config = new WKWebViewConfiguration();
 			config.UserContentController.AddScriptMessageHandler(this, "interOp");
 
-			//var styleFile = NSBundle.MainBundle.PathForResource("theme", "js");
-			//var style = new NSString(File.ReadAllText(styleFile));
-			//var script = new WKUserScript(style, WKUserScriptInjectionTime.AtDocumentEnd, false);
-			//config.UserContentController.AddUserScript(script);
-
 			_webView = new WKWebView(View.Frame, config);
 			_webView.NavigationDelegate = this;
 			_webView.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -43,11 +36,7 @@ namespace Chart.iOS
 			//vertical layout
 			View.AddConstraints(NSLayoutConstraint.FromVisualFormat(@"V:|-44-[webview]-|", 0, null, myViews));
 
-			//_webView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-			//View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-
-			//var url = new NSUrl("https://demo.chartiq.com/chartiq.html");
-			var url = new NSUrl("http://demolibrary.chartiq.com/sample-native/ciq-mobile.html");
+			var url = new NSUrl("http://pelican-chart-demo.azurewebsites.net/Chart/Ciq");
 			var request = new NSUrlRequest(url);
 			_webView.LoadRequest(request);
 		}
@@ -71,14 +60,6 @@ namespace Chart.iOS
 		public void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
 		{
 			_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
-
-			var styleFile = NSBundle.MainBundle.PathForResource("style", "js");
-			var style = File.ReadAllText(styleFile);
-			_webView.EvaluateJavaScript(style, (result, error) => Debug.WriteLine($"error: {error}"));
-
-			//var css = ".stx_candle_down, .stx_line_down { color: #f94949; border-left-color: #000000; } .stx_candle_up, .stx_line_up { color: #0a78fc; border-left-color: #000000; } .stx_candle_shadow, .stx_bar_even { color:#d8d8d8; }";
-			//var js = $"var style = document.createElement('style'); style.innerHTML = '{css}'; document.head.appendChild(style);";
-			//_webView.EvaluateJavaScript(js, (result, error) => Debug.WriteLine($"error: {error}"));
 		}
 	}
 }
