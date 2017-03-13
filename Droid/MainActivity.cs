@@ -1,27 +1,25 @@
 ﻿using Android.App;
-using Android.Widget;
 using Android.OS;
+using Android.Webkit;
 
 namespace Chart.Droid
 {
 	[Activity(Label = "Chart", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : Activity
 	{
-		int count = 1;
+		WebView _webView;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 
-			// Set our view from the "main" layout resource
 			SetContentView(Resource.Layout.Main);
 
-			// Get our button from the layout resource,
-			// and attach an event to it
-			Button button = FindViewById<Button>(Resource.Id.myButton);
-
-			button.Click += delegate { button.Text = $"{count++} clicks!"; };
+			_webView = (WebView)FindViewById(Resource.Id.webview);
+			_webView.Settings.JavaScriptEnabled = true;
+			_webView.SetWebViewClient(new WebViewClient());
+			_webView.SetWebChromeClient(new WebChromeClient());
+			_webView.LoadUrl("http://pelican-chart-demo.azurewebsites.net/Chart/Ciq?x=1s");
 		}
 	}
 }
-

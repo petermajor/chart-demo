@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using Foundation;
 using UIKit;
 using WebKit;
 
 namespace Chart.iOS
 {
-	public partial class ViewController : UIViewController, IWKScriptMessageHandler, IWKNavigationDelegate
+	public partial class ViewController : UIViewController, IWKNavigationDelegate//, IWKScriptMessageHandler
 	{
 		WKWebView _webView;
 
@@ -20,7 +19,7 @@ namespace Chart.iOS
 			base.ViewDidLoad();
 
 			var config = new WKWebViewConfiguration();
-			config.UserContentController.AddScriptMessageHandler(this, "interOp");
+			//config.UserContentController.AddScriptMessageHandler(this, "interOp");
 
 			_webView = new WKWebView(View.Frame, config);
 			_webView.NavigationDelegate = this;
@@ -41,30 +40,24 @@ namespace Chart.iOS
 			_webView.LoadRequest(request);
 		}
 
-		public override void DidReceiveMemoryWarning()
-		{
-			base.DidReceiveMemoryWarning();
-			// Release any cached data, images, etc that aren't in use.		
-		}
+		//[Export("userContentController:didReceiveScriptMessage:")]
+		//public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
+		//{
+		//	var sentData = (NSDictionary)message.Body;
+		//	var aCount = sentData["count"];
+		//	//aCount++;
+		//	_webView.EvaluateJavaScript($"storeAndShow({aCount})", null);
+		//}
 
-		[Export("userContentController:didReceiveScriptMessage:")]
-		public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
-		{
-			var sentData = (NSDictionary)message.Body;
-			var aCount = sentData["count"];
-			//aCount++;
-			_webView.EvaluateJavaScript($"storeAndShow({aCount})", null);
-		}
+		//[Export("webView:didFinishNavigation:")]
+		//public void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
+		//{
+		//	_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
+		//}
 
-		[Export("webView:didFinishNavigation:")]
-		public void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
-		{
-			_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
-		}
-
-		public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
-		{
-			_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
-		}
+		//public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
+		//{
+		//	_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
+		//}
 	}
 }
