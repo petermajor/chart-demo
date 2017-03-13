@@ -36,7 +36,7 @@ namespace Chart.iOS
 			//vertical layout
 			View.AddConstraints(NSLayoutConstraint.FromVisualFormat(@"V:|-44-[webview]-|", 0, null, myViews));
 
-			var url = new NSUrl("http://pelican-chart-demo.azurewebsites.net/Chart/Ciq");
+			var url = new NSUrl("http://pelican-chart-demo.azurewebsites.net/Chart/Ciq?x=1s");
 			var request = new NSUrlRequest(url);
 			_webView.LoadRequest(request);
 		}
@@ -58,6 +58,11 @@ namespace Chart.iOS
 
 		[Export("webView:didFinishNavigation:")]
 		public void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
+		{
+			_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
+		}
+
+		public override void DidRotate(UIInterfaceOrientation fromInterfaceOrientation)
 		{
 			_webView.EvaluateJavaScript("resize()", (result, error) => Debug.WriteLine($"error: {error}"));
 		}
