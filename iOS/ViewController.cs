@@ -31,9 +31,9 @@ namespace Chart.iOS
 			var myViews = NSDictionary.FromObjectsAndKeys(objects, keys);
 
 			//horizontal layout
-			View.AddConstraints(NSLayoutConstraint.FromVisualFormat(@"|-20-[webview]-|", 0, null, myViews));
+			View.AddConstraints(NSLayoutConstraint.FromVisualFormat(@"|[webview]|", 0, null, myViews));
 			//vertical layout
-			View.AddConstraints(NSLayoutConstraint.FromVisualFormat(@"V:|-44-[webview]-|", 0, null, myViews));
+			View.AddConstraints(NSLayoutConstraint.FromVisualFormat(@"V:|-44-[webview]|", 0, null, myViews));
 
 			var url = new NSUrl("http://pelican-chart-demo.azurewebsites.net/Chart/Ciq?x=1s");
 			var request = new NSUrlRequest(url);
