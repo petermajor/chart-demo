@@ -17,9 +17,8 @@ namespace Chart.Droid
 
 			_webView = (WebView)FindViewById(Resource.Id.webview);
 			_webView.Settings.JavaScriptEnabled = true;
-			//_webView.SetWebViewClient(new WebViewClient());
-			//_webView.SetWebChromeClient(new WebChromeClient());
 
+			// hardware layer seems to run worse on my phone than software
 			_webView.SetLayerType(Android.Views.LayerType.Software, null);
 
 			_webView.LoadUrl("http://pelican-chart-demo.azurewebsites.net/Chart/Ciq?x=1s");
